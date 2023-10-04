@@ -1,8 +1,10 @@
 "use client";
 import { getAntdFieldRequiredRule } from "@/helpers/validations";
-import { Button, Form } from "antd";
+import { Button, Form, message } from "antd";
+import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 interface userType {
   email: string;
@@ -10,7 +12,26 @@ interface userType {
 }
 
 function Login() {
-  const onLogin = (values: userType) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const onLogin = async (values: userType) => {
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/auth/login", values);
+      // Token'ı yanıttan al
+      const token = response.data.token;
+      if (token) {
+        // Token'ı local storage'a kaydet
+        localStorage.setItem("token", token);
+      }
+      message.success("Welcome to the Shop Center!");
+      router.push("/");
+    } catch (error: any) {
+      message.error(error.response.data.message);
+    } finally {
+      setLoading(false);
+    }
     console.log(values);
   };
   return (
@@ -43,7 +64,7 @@ function Login() {
           >
             <input type="password" />
           </Form.Item>
-          <Button type="primary" htmlType="submit" block>
+          <Button type="primary" htmlType="submit" block loading={loading}>
             Login
           </Button>
           <Link href="/auth/login" className="text-primary">
