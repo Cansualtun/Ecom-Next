@@ -18,13 +18,7 @@ function Login() {
   const onLogin = async (values: userType) => {
     try {
       setLoading(true);
-      const response = await axios.post("/api/auth/login", values);
-      // Token'ı yanıttan al
-      const token = response.data.token;
-      if (token) {
-        // Token'ı local storage'a kaydet
-        localStorage.setItem("token", token);
-      }
+      await axios.post("/api/auth/login", values);
       message.success("Welcome to the Shop Center!");
       router.push("/");
     } catch (error: any) {
@@ -67,7 +61,7 @@ function Login() {
           <Button type="primary" htmlType="submit" block loading={loading}>
             Login
           </Button>
-          <Link href="/auth/login" className="text-primary">
+          <Link href="/auth/register" className="text-primary">
             Don't have an account? Register
           </Link>
         </Form>
