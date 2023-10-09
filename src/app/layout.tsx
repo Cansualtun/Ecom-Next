@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import LayoutProvider from "@/providers/LayoutProvider";
+import StoreProvider from "@/providers/StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,9 +26,11 @@ export default function RootLayout({
         ></link>
       </head>
       <body>
-        <ThemeProvider>
-          <LayoutProvider>{children}</LayoutProvider>
-        </ThemeProvider>
+        <StoreProvider>
+          <ThemeProvider>
+            <LayoutProvider>{children}</LayoutProvider>
+          </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );

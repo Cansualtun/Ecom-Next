@@ -5,20 +5,24 @@ import axios from "axios";
 import { Popover, message } from "antd";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { SetCurrentUser } from "@/redux/userSlice";
 
 function LayoutProvider({ children }: { children: React.ReactNode }) {
-  const [currentUser, setCurrentUser] = React.useState<any>(null);
+  const { currentUser } = useSelector((state: any) => state.user);
   const [isLoading, setIsLoading] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const isPrivatePage =
     pathname !== "/auth/login" && pathname !== "/auth/register";
 
+  const dispatch = useDispatch();
+
   const getCurrentUser = async () => {
     try {
       setIsLoading(true);
       const response = await axios.get("/api/currentuser");
-      setCurrentUser(response.data.data);
+      dispatch(SetCurrentUser(response.data.data));
     } catch (error: any) {
       message.error(error.response.data.message);
     } finally {
@@ -37,7 +41,6 @@ function LayoutProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(true);
       await axios.get("/api/auth/logout");
       message.success("Logout Successfully");
-      setCurrentUser(null);
       router.push("/auth/login");
     } catch (error: any) {
       message.error(error.response.data.message);
