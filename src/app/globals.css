@@ -5,8 +5,8 @@
 @tailwind utilities;
 
 body {
-  margin : 0;
-  padding : 0
+  margin : 0px;
+  padding : 0px
 }
 
 * , html , body {
@@ -20,7 +20,7 @@ button {
   border-radius: 0 !important;
   border : 1px solid #000000;
 }
-input {
+input, select {
   width: 100% !important;
   height: 40px !important;
   padding: 0 10px !important;
@@ -38,7 +38,12 @@ textarea {
   padding : 10px !important;
 }
 table {
-  border : 1px solid #a9a9a9 !important;
+  border : 1px solid #bebebe !important;
+  border-radius: 0 !important;
+}
+thead th {
+  border-bottom : 1px solid #bebebe !important;
+  font-weight: bold !important;
 }
 .btn-small {
    height : 30px !important;
