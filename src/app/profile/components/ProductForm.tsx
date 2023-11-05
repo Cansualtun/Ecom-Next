@@ -6,11 +6,21 @@ import { useRouter } from "next/navigation";
 
 interface ProductFormProps {
   setSelectedFiles: any;
-  loading: boolean;
+  loading?: boolean;
   onSave: any;
+  initialValues?: any;
+  existingImages?: any;
+  setExistingImages?: any;
 }
 
-function ProductForm({ setSelectedFiles, loading, onSave }: ProductFormProps) {
+function ProductForm({
+  setSelectedFiles,
+  loading,
+  onSave,
+  initialValues,
+  existingImages = [],
+  setExistingImages,
+}: ProductFormProps) {
   const router = useRouter();
   const [categories, setCategories] = React.useState([]);
   const getCategories = async () => {
@@ -32,6 +42,7 @@ function ProductForm({ setSelectedFiles, loading, onSave }: ProductFormProps) {
         layout="vertical"
         className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-5"
         onFinish={onSave}
+        initialValues={initialValues}
       >
         <div className="col-span-3">
           <Form.Item
@@ -79,6 +90,26 @@ function ProductForm({ setSelectedFiles, loading, onSave }: ProductFormProps) {
         >
           <input type="number" />
         </Form.Item>
+        <div className="col-span-3 flex gap-5">
+          {existingImages.map((image: any) => (
+            <div
+              key={image}
+              className="border border-solid p-3 border-gray-300"
+            >
+              <img src={image} alt="product" className="w-20 h-20" />
+              <h1
+                className="cursor-pointer underline text-sm"
+                onClick={() => {
+                  setExistingImages((prev: any) =>
+                    prev.filter((i: any) => i !== image)
+                  );
+                }}
+              >
+                Remove
+              </h1>
+            </div>
+          ))}
+        </div>
         <div className="col-span-3">
           <Upload
             listType="picture-card"
